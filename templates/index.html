@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+問答展示系統
+</title>
+
+
+</head>
+
+
+<body>
+
+
+<h1>
+問答展示系統
+</h1>
+
+
+<p>
+請輸入問題ID
+</p>
+
+
+<p>
+例如：Q001
+</p>
+
+
+
+<form method="post">
+
+
+<input
+type="text"
+name="qid"
+placeholder="Q001"
+>
+
+
+<button>
+查詢
+</button>
+
+
+</form>
+
+
+
+{% if error %}
+
+<p>
+{{error}}
+</p>
+
+{% endif %}
+
+
+
+{% if result %}
+
+
+<hr>
+
+
+{% for turn in result.conversation %}
+
+
+{% if turn.type == "question" %}
+
+<h3>
+提問：
+</h3>
+
+
+{% else %}
+
+<h3>
+回答：
+</h3>
+
+
+{% endif %}
+
+
+<p>
+{{turn.text}}
+</p>
+
+
+
+{% endfor %}
+
+
+
+{% endif %}
+
+
+
+</body>
+
+</html>
