@@ -18,7 +18,7 @@ let scrollAnimation = null;
 // 加载问题
 // =====================
 
-fetch("questions.json")
+fetch("/static/questions.json")
 
 .then(response => response.json())
 
@@ -36,7 +36,7 @@ fetch("questions.json")
 // 加载答案
 // =====================
 
-fetch("answers.json")
+fetch("/static/answers.json")
 
 .then(response => response.json())
 
