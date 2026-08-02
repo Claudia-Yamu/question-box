@@ -7,9 +7,10 @@
 <meta charset="UTF-8">
 
 <title>
-問答展示系統
+我的提问箱
 </title>
 
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -17,91 +18,72 @@
 <body>
 
 
-<h1>
-問答展示系統
-</h1>
+<!-- 背景问题 -->
 
+<div id="container">
 
-<p>
-請輸入問題ID
-</p>
-
-
-<p>
-例如：Q001
-</p>
+</div>
 
 
 
-<form method="post">
+<!-- 标题 -->
 
+<div id="title">
 
-<input
-type="text"
-name="qid"
-placeholder="Q001"
->
+我的提问箱
 
-
-<button>
-查詢
-</button>
-
-
-</form>
+</div>
 
 
 
-{% if error %}
 
-<p>
-{{error}}
-</p>
+<!-- 中央查询窗口 -->
 
-{% endif %}
+<div id="panel">
 
 
+    <div class="panel-title">
 
-{% if result %}
+        请输入您的问题编号
 
-
-<hr>
-
-
-{% for turn in result.conversation %}
+    </div>
 
 
-{% if turn.type == "question" %}
-
-<h3>
-提問：
-</h3>
-
-
-{% else %}
-
-<h3>
-回答：
-</h3>
-
-
-{% endif %}
-
-
-<p>
-{{turn.text}}
-</p>
+    <input
+    id="qid"
+    placeholder="例如 Q001"
+    >
 
 
 
-{% endfor %}
+    <button onclick="searchAnswer()">
+
+        查看回答
+
+    </button>
+
+
+    <div id="result">
+
+    </div>
+
+
+</div>
 
 
 
-{% endif %}
 
+
+<div id="focus">
+
+</div>
+
+
+
+<script src="app.js"></script>
 
 
 </body>
+
 
 </html>
