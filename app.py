@@ -4,8 +4,7 @@ import os
 
 
 app = Flask(
-    __name__,
-    template_folder="visual"
+    __name__
 )
 
 

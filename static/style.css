@@ -10,7 +10,6 @@ src:url("./fonts/FZWeiBei-S03T.ttf");
 
 body {
 
-
 margin:0;
 
 overflow:hidden;
@@ -19,9 +18,7 @@ background:#000;
 
 color:white;
 
-
 font-family:"WeiBei",serif;
-
 
 }
 
@@ -31,7 +28,6 @@ font-family:"WeiBei",serif;
 
 #container{
 
-
 position:absolute;
 
 width:100%;
@@ -40,7 +36,6 @@ height:100%;
 
 z-index:1;
 
-
 }
 
 
@@ -48,7 +43,6 @@ z-index:1;
 /* 标题 */
 
 #title{
-
 
 font-family:"WeiBei";
 
@@ -60,9 +54,9 @@ width:100%;
 
 text-align:center;
 
-font-size:42px;
+font-size:36px;
 
-letter-spacing:14px;
+letter-spacing:12px;
 
 opacity:0.8;
 
@@ -70,15 +64,11 @@ z-index:20;
 
 -webkit-font-smoothing:antialiased;
 
-
 }
 
 
 
-
-
 /* 漂浮问题 */
-
 
 .question{
 
@@ -89,10 +79,10 @@ font-family:"WeiBei";
 position:absolute;
 
 
-max-width:420px;
+max-width:360px;
 
 
-line-height:1.8;
+line-height:1.7;
 
 
 letter-spacing:2px;
@@ -123,7 +113,7 @@ animation:
 
 drift
 
-60s
+30s
 
 ease-in-out
 
@@ -135,9 +125,9 @@ alternate;
 
 transition:
 
-opacity 2s ease,
+opacity 1.5s ease,
 
-filter 2s ease;
+filter 1.5s ease;
 
 
 
@@ -151,35 +141,29 @@ filter:blur(3px);
 
 text-shadow:
 
-0 0 8px rgba(255,255,255,0.12);
+0 0 8px rgba(255,255,255,0.15);
+
 
 
 }
-
 
 
 
 .question.show{
 
-
 opacity:var(--opacity);
 
 filter:blur(0px);
-
 
 }
 
 
 
-
-
 .question.hide{
-
 
 opacity:0;
 
 filter:blur(5px);
-
 
 }
 
@@ -196,12 +180,16 @@ filter:blur(5px);
 transform:
 
 translate(
+
 var(--x1),
+
 var(--y1)
+
 );
 
 
 }
+
 
 
 50%{
@@ -210,12 +198,16 @@ var(--y1)
 transform:
 
 translate(
+
 var(--x2),
+
 var(--y2)
+
 );
 
 
 }
+
 
 
 100%{
@@ -224,8 +216,11 @@ var(--y2)
 transform:
 
 translate(
+
 var(--x1),
+
 var(--y1)
+
 );
 
 
@@ -233,7 +228,6 @@ var(--y1)
 
 
 }
-
 
 
 
@@ -252,10 +246,12 @@ position:absolute;
 width:300px;
 
 
-height:330px;
+min-height:210px;
+
 
 
 box-sizing:border-box;
+
 
 
 left:50%;
@@ -264,31 +260,65 @@ left:50%;
 top:50%;
 
 
+
 transform:
 
 translate(-50%,-50%);
 
 
 
-padding:20px;
+padding:26px;
 
 
+
+/* 透明黑玻璃 */
 
 background:
 
-rgba(0,0,0,0.72);
+rgba(8,8,8,0.28);
 
 
+
+/* 玻璃边缘 */
 
 border:
 
-1px solid rgba(255,255,255,0.3);
+1px solid rgba(255,255,255,0.28);
 
 
+
+border-radius:10px;
+
+
+
+/* 核心：磨砂 */
 
 backdrop-filter:
 
-blur(8px);
+blur(14px);
+
+
+
+-webkit-backdrop-filter:
+
+blur(14px);
+
+
+
+/* 内外光 */
+
+box-shadow:
+
+
+0 0 50px
+
+rgba(255,255,255,0.08),
+
+
+
+inset 0 0 40px
+
+rgba(255,255,255,0.05);
 
 
 
@@ -307,71 +337,209 @@ font-family:"WeiBei",serif;
 }
 
 
+#panel::before{
 
 
+content:"";
+
+
+position:absolute;
+
+
+inset:0;
+
+
+
+background:
+
+linear-gradient(
+
+135deg,
+
+rgba(255,255,255,0.08),
+
+transparent 40%
+
+);
+
+
+
+pointer-events:none;
+
+
+
+border-radius:10px;
+
+
+}
+
+#panel::after{
+
+
+content:"";
+
+
+position:absolute;
+
+
+inset:0;
+
+
+background-image:
+
+url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.15'/%3E%3C/svg%3E");
+
+
+
+opacity:0.08;
+
+
+pointer-events:none;
+
+
+
+border-radius:10px;
+
+
+}
+
+/* 标题 */
 
 .panel-title{
 
 
-font-size:18px;
+font-size:16px;
 
 
 letter-spacing:5px;
 
 
-margin-bottom:18px;
+margin-bottom:14px;
 
 
 }
-
 
 
 
 
 input{
 
+width:150px;
 
-width:160px;
 
+height:32px;
 
-height:36px;
 
 
 font-size:14px;
 
 
+
 font-family:"WeiBei";
+
+
+
+background:
+
+rgba(255,255,255,0.05);
+
+
+
+border:
+
+1px solid rgba(255,255,255,0.35);
+
+
+
+color:white;
+
+
+
+text-align:center;
+
+
+
+outline:none;
+
 
 
 }
 
 
+input::placeholder{
 
+color:
+
+rgba(255,255,255,0.35);
+
+}
 
 
 button{
 
 
-height:36px;
+height:32px;
 
 
-padding:0 12px;
+
+padding:0 15px;
+
+
+
+margin-left:6px;
+
 
 
 font-size:14px;
 
 
+
 font-family:"WeiBei";
+
+
+
+background:
+
+rgba(255,255,255,0.08);
+
+
+
+color:white;
+
+
+
+border:
+
+1px solid rgba(255,255,255,0.35);
+
+
+
+cursor:pointer;
+
+
+
+transition:
+
+all 0.3s ease;
+
 
 
 }
 
 
+button:hover{
+
+
+background:
+
+rgba(255,255,255,0.18);
 
 
 
-/* 答案窗口 */
+}
 
+
+/* 答案区域 */
 
 #result{
 
@@ -379,118 +547,72 @@ font-family:"WeiBei";
 margin-top:18px;
 
 
-height:180px;
+
+max-height:260px;
 
 
-overflow:hidden;
 
+overflow-y:auto;
 
-position:relative;
 
 
 text-align:left;
 
 
-padding-right:5px;
+
+padding:8px;
+
 
 
 line-height:1.8;
 
 
+
 font-size:14px;
+
 
 
 font-family:"WeiBei",serif;
 
 
+
 }
 
+#result::-webkit-scrollbar{
 
-
-
-
-
-
-/* 滚动内容 */
-
-
-.scroll-wrapper{
-
-position:absolute;
-
-top:0;
-
-left:0;
-
-width:100%;
+width:3px;
 
 }
 
 
+#result::-webkit-scrollbar-thumb{
 
-.scroll-content{
+background:
 
-
-width:100%;
-
-
-}
-
-
-
-.scroll-content.clone{
-
-
-margin-top:50px;
-
+rgba(255,255,255,0.3);
 
 }
 
 
-
-
-
+/* 查询问题 */
 
 .question-text{
 
 
-font-size:17px;
+font-size:12px;
 
-
-line-height:1.35;
-
-
-margin-bottom:0;
-
-
-letter-spacing:1px;
-
-
-font-family:"WeiBei";
-
-
-}
-
-
-
-
-
-.answer-text{
-
-
-font-size:15px;
 
 
 line-height:1.45;
 
 
-color:#ddd;
 
+margin-bottom:6px;
 
-margin-bottom:3px;
 
 
 letter-spacing:1px;
+
 
 
 font-family:"WeiBei";
@@ -499,6 +621,37 @@ font-family:"WeiBei";
 }
 
 
+
+
+/* 答案 */
+
+.answer-text{
+
+
+font-size:17px;
+
+
+
+line-height:1.6;
+
+
+
+color:#ddd;
+
+
+
+margin-bottom:10px;
+
+
+
+letter-spacing:1px;
+
+
+
+font-family:"WeiBei";
+
+
+}
 
 
 
@@ -506,29 +659,9 @@ font-family:"WeiBei";
 
 #focus{
 
-
 display:none;
 
-
 }
-
-
-
-
-
-
-
-/* Q/A间距 */
-
-
-.qa-block{
-
-
-margin-bottom:0;
-
-
-}
-
 
 
 

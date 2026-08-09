@@ -6,12 +6,16 @@ const container =
 document.getElementById("container");
 
 
-const SHOW_COUNT = 12;
+const SHOW_COUNT = 18;
 
 
 let usedQuestions = [];
 
-let scrollAnimation = null;
+let activePositions = [];
+
+let positionIndex = 0;
+
+
 
 
 // =====================
@@ -32,6 +36,8 @@ fetch("/static/questions.json")
 
 
 
+
+
 // =====================
 // 加载答案
 // =====================
@@ -48,8 +54,11 @@ fetch("/static/answers.json")
 
 
 
+
+
+
 // =====================
-// 背景问题
+// 创建背景问题
 // =====================
 
 
@@ -65,17 +74,22 @@ for(let i=0;i<SHOW_COUNT;i++){
         createOneQuestion();
 
 
-    },i*2500);
+    },i*1200);
 
 
 }
 
 
 }
+
+
+
+
 
 
 
 function createOneQuestion(){
+
 
 
 let q =
@@ -90,17 +104,20 @@ document.createElement("div");
 
 div.className="question";
 
+
 div.innerText=q;
 
 
 
 let position =
-getSafePosition();
+getBalancedPosition();
+
 
 
 
 div.style.left =
 position.x+"%";
+
 
 div.style.top =
 position.y+"%";
@@ -108,6 +125,8 @@ position.y+"%";
 
 
 adjustStyle(div);
+
+
 
 setRandomMovement(div);
 
@@ -119,22 +138,30 @@ container.appendChild(div);
 
 setTimeout(()=>{
 
+
 div.classList.add("show");
 
-},500);
+
+},300);
 
 
 
 
 
 let stayTime =
-30000 + Math.random()*10000;
+24000 + Math.random()*6000;
+
 
 
 
 setTimeout(()=>{
 
-removeQuestion(div);
+
+removeQuestion(
+div,
+position.index
+);
+
 
 },stayTime);
 
@@ -144,7 +171,13 @@ removeQuestion(div);
 
 
 
-function removeQuestion(element){
+
+
+
+
+
+function removeQuestion(element,index){
+
 
 
 element.classList.remove("show");
@@ -159,13 +192,26 @@ setTimeout(()=>{
 element.remove();
 
 
+
+activePositions =
+activePositions.filter(
+item=>item!==index
+);
+
+
+
 createOneQuestion();
 
 
-},5000);
+
+},2000);
+
 
 
 }
+
+
+
 
 
 
@@ -177,6 +223,7 @@ createOneQuestion();
 
 
 function getRandomQuestion(){
+
 
 
 let q;
@@ -194,6 +241,7 @@ Math.random()*questions.length
 ];
 
 
+
 }
 
 while(
@@ -207,7 +255,7 @@ usedQuestions.push(q);
 
 
 if(
-usedQuestions.length>60
+usedQuestions.length>100
 ){
 
 usedQuestions.shift();
@@ -225,62 +273,204 @@ return q;
 
 
 
+
+
+
 // =====================
-// 位置
+// 空间区域
 // =====================
 
 
-function getSafePosition(){
+function getBalancedPosition(){
 
 
-let zones=[
 
-{x:[5,25],y:[8,25]},
+let positions=[
 
-{x:[38,62],y:[5,20]},
 
-{x:[72,92],y:[10,30]},
 
-{x:[5,25],y:[35,55]},
+// 左上区域
 
-{x:[75,95],y:[38,60]},
+{x:[5,25],y:[8,22]},
 
-{x:[5,28],y:[70,88]},
 
-{x:[38,62],y:[75,92]},
+// 上左
 
-{x:[72,95],y:[70,90]}
+{x:[28,42],y:[5,18]},
+
+
+// 上中
+
+{x:[45,58],y:[8,20]},
+
+
+// 上右
+
+{x:[65,80],y:[5,18]},
+
+
+// 右上
+
+{x:[82,95],y:[10,25]},
+
+
+// 左侧上
+
+{x:[5,22],y:[28,45]},
+
+
+// 左侧中
+
+{x:[8,25],y:[48,65]},
+
+
+// 左侧下
+
+{x:[5,25],y:[70,88]},
+
+
+// 下左
+
+{x:[28,42],y:[80,95]},
+
+
+// 下中左
+
+{x:[45,58],y:[75,90]},
+
+
+// 下中右
+
+{x:[60,72],y:[82,95]},
+
+
+// 右下
+
+{x:[78,95],y:[70,90]},
+
+
+// 右侧下
+
+{x:[82,95],y:[48,65]},
+
+
+// 右侧中
+
+{x:[78,95],y:[30,45]},
+
+
+// 中左
+
+{x:[25,35],y:[35,50]},
+
+
+// 中右
+
+{x:[65,75],y:[35,50]},
+
+
+// 中上
+
+{x:[40,55],y:[22,35]},
+
+
+// 中下
+
+{x:[40,55],y:[65,78]},
+
+
+// 左中偏内
+
+{x:[22,32],y:[55,70]},
+
+
+// 右中偏内
+
+{x:[68,78],y:[55,70]}
+
+
 
 ];
+
+
+
+
+
+let index;
+
+
+
+let attempts=0;
+
+
+
+do{
+
+
+index =
+positionIndex %
+positions.length;
+
+
+positionIndex++;
+
+
+attempts++;
+
+
+
+}
+
+while(
+
+activePositions.includes(index)
+
+&&
+
+attempts<30
+
+);
+
+
+
+
+
+activePositions.push(index);
 
 
 
 let zone =
-zones[
-Math.floor(
-Math.random()*zones.length
-)
-];
+positions[index];
 
 
 
-return {
+
+return{
 
 
 x:
-zone.x[0]+
+
+zone.x[0]
++
 Math.random()*
 (zone.x[1]-zone.x[0]),
 
 
 
 y:
-zone.y[0]+
+
+zone.y[0]
++
 Math.random()*
-(zone.y[1]-zone.y[0])
+(zone.y[1]-zone.y[0]),
+
+
+
+index:index
 
 
 };
+
 
 
 }
@@ -289,16 +479,21 @@ Math.random()*
 
 
 
+
+
+
 // =====================
-// 字体透明度
+// 字体
 // =====================
 
 
 function adjustStyle(element){
 
 
+
 let size =
 20+Math.random()*6;
+
 
 
 element.style.fontSize =
@@ -307,15 +502,17 @@ size+"px";
 
 
 element.style.setProperty(
-
 "--opacity",
-
-0.25+Math.random()*0.2
-
+0.38+Math.random()*0.22
 );
 
 
+
 }
+
+
+
+
 
 
 
@@ -328,8 +525,9 @@ element.style.setProperty(
 function setRandomMovement(element){
 
 
+
 let range =
-40+Math.random()*40;
+100+Math.random()*100;
 
 
 
@@ -375,10 +573,13 @@ Math.random()*range-range/2+"px"
 
 element.style.animationDuration =
 
-45+Math.random()*35+"s";
+25+Math.random()*25+"s";
+
 
 
 }
+
+
 
 
 
@@ -419,10 +620,7 @@ result.innerHTML="没有找到这个问题";
 
 return;
 
-
 }
-
-
 
 
 
@@ -436,8 +634,7 @@ conversation.forEach(turn=>{
 if(turn.type==="question"){
 
 
-html +=
-`
+html+=`
 
 <div class="question-text">
 
@@ -447,7 +644,6 @@ Q: ${turn.text}
 
 `;
 
-
 }
 
 
@@ -455,8 +651,7 @@ Q: ${turn.text}
 if(turn.type==="answer"){
 
 
-html +=
-`
+html+=`
 
 <div class="answer-text">
 
@@ -466,7 +661,6 @@ A: ${turn.text}
 
 `;
 
-
 }
 
 
@@ -475,143 +669,13 @@ A: ${turn.text}
 
 
 
-
-
-result.innerHTML=
-
-`
-
-<div class="scroll-wrapper">
-
-
-<div class="scroll-content">
-
-${html}
-
-</div>
-
-
-
-<div class="scroll-content clone">
-
-${html}
-
-</div>
-
-
-</div>
-
-`;
-
-
-
-startAnswerScroll();
+result.innerHTML=html;
 
 
 
 document
 .getElementById("qid")
 .value="";
-
-
-}
-
-
-
-
-
-
-// =====================
-// 循环滚动
-// =====================
-
-
-function startAnswerScroll(){
-
-
-let result =
-document.getElementById("result");
-
-
-let wrapper =
-result.querySelector(
-".scroll-wrapper"
-);
-
-
-
-if(!wrapper){
-
-return;
-
-}
-
-
-
-
-
-if(scrollAnimation){
-
-clearInterval(scrollAnimation);
-
-scrollAnimation=null;
-
-}
-
-
-
-
-
-let position=0;
-
-
-
-setTimeout(()=>{
-
-
-scrollAnimation=setInterval(()=>{
-
-
-position+=0.15;
-
-
-
-wrapper.style.transform=
-
-`translateY(-${position}px)`;
-
-
-
-
-
-let content =
-wrapper.querySelector(
-".scroll-content"
-);
-
-
-
-if(
-position>=content.offsetHeight
-){
-
-
-position=0;
-
-
-wrapper.style.transform=
-"translateY(0)";
-
-
-}
-
-
-
-},30);
-
-
-
-},2000);
 
 
 
